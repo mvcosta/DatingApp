@@ -5,19 +5,21 @@ using Microsoft.EntityFrameworkCore;
 
 namespace API.Extensions
 {
-  public static class ApplicationServiceExtensions
-  {
-    public static IServiceCollection AddAplicationServices(this IServiceCollection services,
-        IConfiguration config)
+    public static class ApplicationServiceExtensions
     {
-      services.AddDbContext<DataContext>(opt =>
+        public static IServiceCollection AddAplicationServices(this IServiceCollection services,
+            IConfiguration config)
         {
-          opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
-        });
-      services.AddCors();
-      services.AddScoped<ITokenService, TokenService>();
+            services.AddDbContext<DataContext>(opt =>
+              {
+                  opt.UseSqlite(config.GetConnectionString("DefaultConnection"));
+              });
+            services.AddCors();
+            services.AddScoped<ITokenService, TokenService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-      return services;
+            return services;
+        }
     }
-  }
 }
